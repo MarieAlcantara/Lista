@@ -41,7 +41,7 @@ public class NewItemActivity extends AppCompatActivity {
 
         Button btnAddItem = findViewById(R.id.btnAddItem);
 
-        btnAddItem.setOnClickListener(new View.OnClickListener() {
+        btnAddItem.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 if (photoSelected == null) {
@@ -55,14 +55,24 @@ public class NewItemActivity extends AppCompatActivity {
                     Toast.makeText(NewItemActivity.this, "É necessário inserir um título", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                EditText etDesc = findViewById(R.id.etDesc);
+                String desc = etDesc.getText().toString();
+
+
+                if (desc.isEmpty()){
+                    Toast.makeText(NewItemActivity.this, "É necessário inserir uma descrição!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                Intent i = new Intent();
+                i.setData(photoSelected);
+                i.putExtra("title", title);
+                i.putExtra("description", desc);
+                setResult(Activity.RESULT_OK, i);
+                finish();
             }
 
-            EditText etDesc = findViewById(R.id.etDesc);
-            String description = etDesc.getText().toString();
-            if (desc.isEmpty()) {
-                Toast.makeText(NewItemActivity.this, "É necessário inserir uma descrição!", Toast.LENGTH_LONG).show();
-                return;
-            }
         });
 
 
