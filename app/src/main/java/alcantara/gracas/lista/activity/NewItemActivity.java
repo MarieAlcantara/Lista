@@ -22,7 +22,7 @@ import alcantara.gracas.lista.R;
 public class NewItemActivity extends AppCompatActivity {
 
     static int PHOTO_PICKER_REQUEST = 1;
-    Uri photoSelected = null;
+    Uri photoSelected = null;//guarda o endereco da foto que esta em outro lugar
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +79,11 @@ public class NewItemActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {//retorna dados da activity que iniciou a acao
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PHOTO_PICKER_REQUEST) {
-            if(resultCode == Activity.RESULT_OK) {
+        if(requestCode == PHOTO_PICKER_REQUEST) {//verificamos se requestCode e referente ao fornecido na chamada do startActiviyForResult com id PHOTO_PICKER_REQUEST
+            if(resultCode == Activity.RESULT_OK) {//verificamos se resultCode e um codigo de sucesso
+                //Se as duas condicoes forem verdadeiras, conseguimos o resultado das proximas linhas
                 photoSelected = data.getData();
                 ImageView imvfotoPreview = findViewById(R.id.imvPhotoPreview);
                 imvfotoPreview.setImageURI(photoSelected);

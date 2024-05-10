@@ -1,6 +1,5 @@
 package alcantara.gracas.lista.activity;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +21,7 @@ import alcantara.gracas.lista.model.MyItem;
 
 public class MainActivity extends AppCompatActivity {
     static int NEW_ITEM_REQUEST = 1;
-    List<MyItem> itens = new ArrayList<>();
+    List<MyItem> itens = new ArrayList<>();//lista de itens
 
     MyAdapter myAdapter;
 
@@ -36,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, NewItemActivity.class);//intent para navegar para outra tela
-                startActivityForResult(i, NEW_ITEM_REQUEST);
+                startActivityForResult(i, NEW_ITEM_REQUEST);//executamos o Intent usando um metodo especial que a Activity destino ira retornar com dados em algum momento para a Activity que iniciou a navegacao
+
             }
 
         });
@@ -48,12 +48,14 @@ public class MainActivity extends AppCompatActivity {
 
         rvItens.setHasFixedSize(true);//o metodo setHasFixedSize indica ao RecycleView que nao ha variacao de tamanho entre os itens da lista. Isso faz com que a construcao da lista seja mais rapida
 
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-            rvItens.setLayoutManager(layoutManager);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        rvItens.setLayoutManager(layoutManager);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvItens.getContext(), DividerItemDecoration.VERTICAL);
         rvItens.addItemDecoration(dividerItemDecoration);
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
