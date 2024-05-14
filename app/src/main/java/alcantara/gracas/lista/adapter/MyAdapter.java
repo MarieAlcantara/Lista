@@ -36,12 +36,13 @@ public class MyAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {//recebe a interface que foi recebida no metodo anterior
 
-        MyItem myItem = itens.get(position);
+        MyItem myItem = itens.get(position);//obtem o item a ser usado para preencher a UI
 
-        View v = holder.itemView;
+        View v = holder.itemView;//obtem o objeto do tipo View que esta guardado dentro do ViwHolder
 
+        //preenche os dados do item (foto, titulo, descricao) dentro da interface
         ImageView imvfoto = v.findViewById(R.id.imvPhoto);
-        imvfoto.setImageURI(myItem.foto);
+        imvfoto.setImageURI(myItem.photo);
 
         TextView tvTitle = v.findViewById(R.id.tvTitle);
         tvTitle.setText(myItem.title);

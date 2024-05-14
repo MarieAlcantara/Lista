@@ -20,6 +20,8 @@ import alcantara.gracas.lista.adapter.MyAdapter;
 import alcantara.gracas.lista.model.MyItem;
 
 public class MainActivity extends AppCompatActivity {
+
+    //Identificador de chamada
     static int NEW_ITEM_REQUEST = 1;
     List<MyItem> itens = new ArrayList<>();//lista de itens
 
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         rvItens.setLayoutManager(layoutManager);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvItens.getContext(), DividerItemDecoration.VERTICAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvItens.getContext(), DividerItemDecoration.VERTICAL);//cria um decorador para a lista, que conciste apenas em uma linha separando cada lista
         rvItens.addItemDecoration(dividerItemDecoration);
     }
 
@@ -61,14 +63,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == NEW_ITEM_REQUEST) {
-            if(resultCode == Activity.RESULT_OK) {
-                MyItem myItem = new MyItem();
+            if(resultCode == Activity.RESULT_OK) {//verifica se as condicoes de retorno foram atendidas
+
+                MyItem myItem = new MyItem();//cria um objeto de Myitem para guardar os dados do item
+
+                //obtem os dados retornados por NewItemActivity e os gyarda dentro de MyItem
                 myItem.title = data.getStringExtra("title");
                 myItem.desc = data.getStringExtra("description");
                 myItem.photo = data.getData();
 
-                itens.add(myItem);
-                myAdapter.notifyItemInserted(itens.size()-1);
+                itens.add(myItem);//adiciona o item a uma lista de itens que eh repassada para o Adapter
+                myAdapter.notifyItemInserted(itens.size()-1);//modifica o Adapter para que o RecycleView se atualize e exiba o novo item
             }
         }
 

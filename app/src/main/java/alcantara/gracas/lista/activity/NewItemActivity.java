@@ -21,6 +21,7 @@ import alcantara.gracas.lista.R;
 
 public class NewItemActivity extends AppCompatActivity {
 
+    //identificador de chamada
     static int PHOTO_PICKER_REQUEST = 1;
     Uri photoSelected = null;//guarda o endereco da foto que esta em outro lugar
 
@@ -39,19 +40,20 @@ public class NewItemActivity extends AppCompatActivity {
             }
         });
 
-        Button btnAddItem = findViewById(R.id.btnAddItem);
+        Button btnAddItem = findViewById(R.id.btnAddItem);//botao que adiciona item
 
         btnAddItem.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (photoSelected == null) {
+
+                if (photoSelected == null) {//Verifica se nenhuma imagem foi selecionada, se nao foi aparecera uma mensagem de erro
                     Toast.makeText(NewItemActivity.this, "É necessário selecionar uma imagem!", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                EditText etTitle = findViewById(R.id.etTitle);
-                String title = etTitle.getText().toString();
-                if (title.isEmpty()) {
+                EditText etTitle = findViewById(R.id.etTitle);//obtem o editText com o titulo
+                String title = etTitle.getText().toString();//converte o texto do titulo em string
+                if (title.isEmpty()) {//verifica se o titulo esta vazio, se estiver manda uma mensagem de erro
                     Toast.makeText(NewItemActivity.this, "É necessário inserir um título", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -60,17 +62,18 @@ public class NewItemActivity extends AppCompatActivity {
                 String desc = etDesc.getText().toString();
 
 
-                if (desc.isEmpty()){
+                if (desc.isEmpty()){//verifica se o campo da descricao esta vazio, se estiver manda uma mensagem de erro
                     Toast.makeText(NewItemActivity.this, "É necessário inserir uma descrição!", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                Intent i = new Intent();
-                i.setData(photoSelected);
-                i.putExtra("title", title);
-                i.putExtra("description", desc);
+                Intent i = new Intent();//cria uma intent para guardar os dados a serem retornados a MainActivity
+
+                i.setData(photoSelected);//seta o Uri da imagem elecionada dentro do Intent
+                i.putExtra("title", title);//seta o titulo dentro da Intent
+                i.putExtra("description", desc);//seta a descricao dentro da Intent
                 setResult(Activity.RESULT_OK, i);
-                finish();
+                finish();//finaliza a activity
             }
 
         });
