@@ -1,29 +1,37 @@
 package alcantara.gracas.lista.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.FileUriExposedException;
+import android.provider.ContactsContract;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import alcantara.gracas.lista.R;
 import alcantara.gracas.lista.adapter.MyAdapter;
+import alcantara.gracas.lista.model.MainActivityViewModel;
 import alcantara.gracas.lista.model.MyItem;
+import alcantara.gracas.lista.util.Util;
 
 public class MainActivity extends AppCompatActivity {
 
     //Identificador de chamada
     static int NEW_ITEM_REQUEST = 1;
-    List<MyItem> itens = new ArrayList<>();//lista de itens
+
 
     MyAdapter myAdapter;
 
@@ -44,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         RecyclerView rvItens = findViewById(R.id.rvItens);//obtemos o RecycleView
+
+        MainActivityViewModel vm = new ViewModelProvider(this).get(MainActivityViewModel.class);//o MainActivityModel e quem guarda a lista agora
+        List<MyItem> itens = vm.getItens();
 
         myAdapter = new MyAdapter(this,itens);
         rvItens.setAdapter(myAdapter);//e criado o MyAdapter e ele e setado no RecycleView
@@ -70,7 +81,22 @@ public class MainActivity extends AppCompatActivity {
                 //obtem os dados retornados por NewItemActivity e os gyarda dentro de MyItem
                 myItem.title = data.getStringExtra("title");
                 myItem.desc = data.getStringExtra("description");
-                myItem.photo = data.getData();
+                Uri selectPhotoUri = data.getData();
+
+                MainActivityViewModel vm = new ViewModelProvider(this).get(MainActivityViewModel.class);
+                List<MyItem> itens = vm.getItens();
+
+                itens.add(myItem);
+                    myAdapter.notifyItemInserted(itens.size()-1);
+
+                //Encontra o erro, porem nao para a aplicacao. O erro so e mostrado no logcat, assim a app pode continuar normalmente
+                //o seguinte codigo esta dentro de um try-catch, onde a excecao e disparada caso o arquivo de imagem nao seja encontrado
+                try {
+                    Bitmap photo = Util.getBitmap(MainActivity.this, selectPhotoUri, 100, 100);//carrega a funcao e a guarda dentro de um bitmap. Assim, criamos uma copia da imagem e nao precisamos usar o endereco da imagem
+                    myItem.photo = photo;//guardamos o Bitmap da imagem dentro de um objeto do tipo MyItem.
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
 
                 itens.add(myItem);//adiciona o item a uma lista de itens que eh repassada para o Adapter
                 myAdapter.notifyItemInserted(itens.size()-1);//modifica o Adapter para que o RecycleView se atualize e exiba o novo item
