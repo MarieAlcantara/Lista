@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/imvPhotoPreview"
         android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
@@ -55,6 +55,7 @@
         android:id="@+id/imbCl"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btnAddItem"
         app:layout_constraintEnd_toStartOf="@+id/etDesc"
         app:layout_constraintStart_toStartOf="parent"

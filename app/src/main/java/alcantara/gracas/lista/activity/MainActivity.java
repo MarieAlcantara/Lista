@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     //Identificador de chamada
     static int NEW_ITEM_REQUEST = 1;
 
-
     MyAdapter myAdapter;
 
     @Override
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView rvItens = findViewById(R.id.rvItens);//obtemos o RecycleView
 
         MainActivityViewModel vm = new ViewModelProvider(this).get(MainActivityViewModel.class);//o MainActivityModel e quem guarda a lista agora
-        List<MyItem> itens = vm.getItens();
+        List<MyItem> itens = vm.getItens();//lista de itens que o viewmodel recebe
 
         myAdapter = new MyAdapter(this,itens);
         rvItens.setAdapter(myAdapter);//e criado o MyAdapter e ele e setado no RecycleView
@@ -83,12 +82,6 @@ public class MainActivity extends AppCompatActivity {
                 myItem.desc = data.getStringExtra("description");
                 Uri selectPhotoUri = data.getData();
 
-                MainActivityViewModel vm = new ViewModelProvider(this).get(MainActivityViewModel.class);
-                List<MyItem> itens = vm.getItens();
-
-                itens.add(myItem);
-                    myAdapter.notifyItemInserted(itens.size()-1);
-
                 //Encontra o erro, porem nao para a aplicacao. O erro so e mostrado no logcat, assim a app pode continuar normalmente
                 //o seguinte codigo esta dentro de um try-catch, onde a excecao e disparada caso o arquivo de imagem nao seja encontrado
                 try {
@@ -97,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
+
+                MainActivityViewModel vm = new ViewModelProvider(this).get(MainActivityViewModel.class);
+                List<MyItem> itens = vm.getItens();
 
                 itens.add(myItem);//adiciona o item a uma lista de itens que eh repassada para o Adapter
                 myAdapter.notifyItemInserted(itens.size()-1);//modifica o Adapter para que o RecycleView se atualize e exiba o novo item

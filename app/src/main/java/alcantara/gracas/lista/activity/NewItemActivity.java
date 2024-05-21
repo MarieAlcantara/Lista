@@ -16,19 +16,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import alcantara.gracas.lista.R;
+import alcantara.gracas.lista.model.NewItemActivityViewModel;
 
 public class NewItemActivity extends AppCompatActivity {
 
     //identificador de chamada
     static int PHOTO_PICKER_REQUEST = 1;
-    Uri photoSelected = null;//guarda o endereco da foto que esta em outro lugar
 
+    Uri photoSelected = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_item);
+
+        NewItemActivityViewModel vm = new ViewModelProvider(this).get(NewItemActivityViewModel.class);//obtem o ViewModel referente a NewItem Activity
+
+        Uri selectPhotoLocation = vm.getSelectPhotoLocation();//obtem o endereco Uri guardado dentro do ViewModel
+
+        //verifica se o endereco URI nao eh nulo
+        if(selectPhotoLocation != null) {
+            //caso nao seja nulo, obtem a imageView
+            ImageView imvPhotoPreview = findViewById(R.id.imvPhotoPreview);
+            imvPhotoPreview.setImageURI(selectPhotoLocation);//seta a imagem selecionada pelo ususario no imageView da tela
+        }
 
         ImageButton imgCl = findViewById(R.id.imbCl);//obtemos o botao
         imgCl.setOnClickListener(new View.OnClickListener() {//ouvidor de cliques
@@ -90,6 +103,9 @@ public class NewItemActivity extends AppCompatActivity {
                 photoSelected = data.getData();
                 ImageView imvfotoPreview = findViewById(R.id.imvPhotoPreview);
                 imvfotoPreview.setImageURI(photoSelected);
+
+                NewItemActivityViewModel vm = new ViewModelProvider(this).get(NewItemActivityViewModel.class);
+                vm.setSelectPhotoLocation(photoSelected);
             }
     }
 }}
